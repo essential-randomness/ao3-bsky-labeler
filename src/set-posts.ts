@@ -56,7 +56,8 @@ for (const [name, rkey] of Object.entries(labelRkeys)) {
   console.log(`    rkey: '${rkey}',`);
 }
 
-const deletePost = await bot.post({ text: DELETE_POST });
+const deletePost =
+  LABELS_THREAD_FORMAT == 'thread' ? await replyTo.reply({ text: DELETE_POST }) : await bot.post({ text: DELETE_POST });
 const deletePostRkey = deletePost.uri.split('/').pop()!;
 console.log('Delete post rkey:');
 console.log(`export const DELETE = '${deletePostRkey}';`);
