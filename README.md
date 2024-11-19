@@ -10,8 +10,8 @@ The process of creating a labeler requires a few different steps:
 
 1. Turn your account into a labeler account (`bunx @skyware/labeler setup`)
 2. Create the set of posts that people will interact with to set their labels (`bun set-posts`)
-3. Add the labels to the labeler itself (`bun set-labels` or `bunx @skyware/labeler label add`)
-4. Create a server to host the labeler on and serve labels
+3. Add the labels to the labeler account itself (`bun set-labels` or `bunx @skyware/labeler label add`)
+4. Create a server to host the labeler on and serve labels (`bun run start`)
 
 ## Prerequisites
 
