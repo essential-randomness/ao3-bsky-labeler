@@ -3,5 +3,6 @@ import { LabelValueDefinitionStrings } from '@atproto/api/dist/client/types/com/
 export interface Label {
   rkey: string;
   identifier: string;
+  post?: string;
   locales: LabelValueDefinitionStrings[];
 }

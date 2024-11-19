@@ -1,7 +1,7 @@
 import { Bot } from '@skyware/bot';
 
 import { BSKY_IDENTIFIER, BSKY_PASSWORD } from './config.js';
-import { LABELS } from './constants.js';
+import { DELETE_POST, LABELS, ROOT_POST } from './constants.js';
 
 const bot = new Bot();
 
@@ -35,11 +35,11 @@ if (answer === 'y') {
 }
 
 const post = await bot.post({
-  text: 'Like the replies to this post to receive labels.',
+  text: ROOT_POST,
   threadgate: { allowLists: [] },
 });
 
-const labelNames = LABELS.map((label) => label.locales.map((locale) => locale.name).join(' | '));
+const labelNames = LABELS.map((label) => label.post ?? label.locales.map((locale) => locale.name).join(' | '));
 const labelRkeys: Record<string, string> = {};
 for (const labelName of labelNames) {
   const labelPost = await post.reply({ text: labelName });
@@ -52,7 +52,7 @@ for (const [name, rkey] of Object.entries(labelRkeys)) {
   console.log(`    rkey: '${rkey}',`);
 }
 
-const deletePost = await bot.post({ text: 'Like this post to delete all labels.' });
+const deletePost = await bot.post({ text: DELETE_POST });
 const deletePostRkey = deletePost.uri.split('/').pop()!;
 console.log('Delete post rkey:');
 console.log(`export const DELETE = '${deletePostRkey}';`);
