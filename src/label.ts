@@ -2,8 +2,14 @@ import { ComAtprotoLabelDefs } from '@atcute/client/lexicons';
 import { LabelerServer } from '@skyware/labeler';
 
 import { DID, SIGNING_KEY } from './config.js';
-import { DELETE, LABELS, LABEL_LIMIT } from './constants.js';
+import { LABEL_SETS } from './constants.js';
 import logger from './logger.js';
+import { LabelSet } from './types.js';
+
+const LABELS_IN_SET = new Map<LabelSet, string[]>();
+for (const labelSet of LABEL_SETS) {
+  LABELS_IN_SET.set(labelSet, [labelSet.deletePost.rkey, ...labelSet.labels.map((l) => l.rkey)]);
+}
 
 export const labelerServer = new LabelerServer({ did: DID, signingKey: SIGNING_KEY });
 
@@ -17,10 +23,15 @@ export const label = (did: string, rkey: string) => {
   try {
     const labels = fetchCurrentLabels(did);
 
-    if (rkey.includes(DELETE)) {
-      deleteAllLabels(did, labels);
-    } else {
-      addOrUpdateLabel(did, rkey, labels);
+    for (const labelSet of LABEL_SETS) {
+      if (!LABELS_IN_SET.get(labelSet)?.includes(rkey)) {
+        continue;
+      }
+      if (rkey.includes(labelSet.deletePost.rkey)) {
+        deleteAllLabels(did, new Set(labelSet.labels.map((l) => l.identifier)));
+      } else {
+        addOrUpdateLabel(did, rkey, labels, labelSet);
+      }
     }
   } catch (error) {
     logger.error(`Error in \`label\` function: ${error}`);
@@ -61,15 +72,15 @@ function deleteAllLabels(did: string, labels: Set<string>) {
   }
 }
 
-function addOrUpdateLabel(did: string, rkey: string, labels: Set<string>) {
-  const newLabel = LABELS.find((label) => label.rkey === rkey);
+function addOrUpdateLabel(did: string, rkey: string, labels: Set<string>, labelSet: LabelSet) {
+  const newLabel = labelSet.labels.find((label) => label.rkey === rkey);
   if (!newLabel) {
     logger.warn(`New label not found: ${rkey}. Likely liked a post that's not one for labels.`);
     return;
   }
   logger.info(`New label: ${newLabel.identifier}`);
 
-  if (labels.size >= LABEL_LIMIT) {
+  if (labelSet.labelLimit !== -1 && labels.size >= labelSet.labelLimit) {
     try {
       labelerServer.createLabels({ uri: did }, { negate: Array.from(labels) });
       logger.info(`Successfully negated existing labels: ${Array.from(labels).join(', ')}`);

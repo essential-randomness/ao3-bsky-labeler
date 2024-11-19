@@ -2,7 +2,7 @@ import { type ComAtprotoLabelDefs } from '@atproto/api';
 import { type LoginCredentials, setLabelerLabelDefinitions } from '@skyware/labeler/scripts';
 
 import { BSKY_IDENTIFIER, BSKY_PASSWORD } from './config.js';
-import { LABELS } from './constants.js';
+import { LABEL_SETS } from './constants.js';
 import logger from './logger.js';
 
 const loginCredentials: LoginCredentials = {
@@ -12,17 +12,21 @@ const loginCredentials: LoginCredentials = {
 
 const labelDefinitions: ComAtprotoLabelDefs.LabelValueDefinition[] = [];
 
-for (const label of LABELS) {
-  const labelValueDefinition: ComAtprotoLabelDefs.LabelValueDefinition = {
-    identifier: label.identifier,
-    severity: 'inform',
-    blurs: 'none',
-    defaultSetting: 'warn',
-    adultOnly: false,
-    locales: label.locales,
-  };
+for (const labelSet of LABEL_SETS) {
+  const setDefinitions = [];
+  for (const label of labelSet.labels) {
+    const labelValueDefinition: ComAtprotoLabelDefs.LabelValueDefinition = {
+      identifier: label.identifier,
+      severity: 'inform',
+      blurs: 'none',
+      defaultSetting: 'warn',
+      adultOnly: false,
+      locales: label.locales,
+    };
 
-  labelDefinitions.push(labelValueDefinition);
+    setDefinitions.push(labelValueDefinition);
+  }
+  labelDefinitions.unshift(...setDefinitions);
 }
 
 try {
