@@ -1,5 +1,9 @@
 import { Label } from './types.js';
 
+
+// Whether the labels should be posted as a thread (where each label setter is a 
+// reply to the previous post) or as a series of replies to the root post.
+export const LABELS_THREAD_FORMAT : "thread" | "root_replies" = "root_replies";  
 export const DELETE = 'insert-rkey-of-delete-post-here';
 export const LABEL_LIMIT = 1;
 export const ROOT_POST = 'Like the replies to this post to add an AO3 rating label to your account (for funsies!).';

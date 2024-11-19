@@ -1,7 +1,7 @@
 import { Bot } from '@skyware/bot';
 
 import { BSKY_IDENTIFIER, BSKY_PASSWORD } from './config.js';
-import { DELETE_POST, LABELS, ROOT_POST } from './constants.js';
+import { DELETE_POST, LABELS, LABELS_THREAD_FORMAT, ROOT_POST } from './constants.js';
 
 const bot = new Bot();
 
@@ -41,9 +41,13 @@ const post = await bot.post({
 
 const labelNames = LABELS.map((label) => label.post ?? label.locales.map((locale) => locale.name).join(' | '));
 const labelRkeys: Record<string, string> = {};
+let replyTo = post;
 for (const labelName of labelNames) {
-  const labelPost = await post.reply({ text: labelName });
+  const labelPost = await replyTo.reply({ text: labelName });
   labelRkeys[labelName] = labelPost.uri.split('/').pop()!;
+  if (LABELS_THREAD_FORMAT == 'thread') {
+    replyTo = labelPost;
+  }
 }
 
 console.log('Label rkeys:');
