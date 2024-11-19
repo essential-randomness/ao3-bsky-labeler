@@ -82,8 +82,11 @@ function addOrUpdateLabel(did: string, rkey: string, labels: Set<string>, labelS
 
   if (labelSet.labelLimit !== -1 && labels.size >= labelSet.labelLimit) {
     try {
-      labelerServer.createLabels({ uri: did }, { negate: Array.from(labels) });
-      logger.info(`Successfully negated existing labels: ${Array.from(labels).join(', ')}`);
+      const toNegate = Array.from(labels).filter(
+        (label) => !!labelSet.labels.find((setLabel) => label == setLabel.identifier),
+      );
+      labelerServer.createLabels({ uri: did }, { negate: toNegate });
+      logger.info(`Successfully negated existing labels: ${toNegate.join(', ')}`);
     } catch (error) {
       logger.error(`Error negating existing labels: ${error}`);
     }
