@@ -4,3 +4,5 @@ cursor.txt
 *.log
 labels.db*
 bun.lockb
+nohup.out
+result

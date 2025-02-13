@@ -1,7 +1,7 @@
 import { ComAtprotoLabelDefs } from '@atcute/client/lexicons';
 import { LabelerServer } from '@skyware/labeler';
 
-import { DID, SIGNING_KEY } from './config.js';
+import { DID, SIGNING_KEY, DB_PATH } from './config.js';
 import { LABEL_SETS } from './constants.js';
 import logger from './logger.js';
 import { LabelSet } from './types.js';
@@ -11,7 +11,7 @@ for (const labelSet of LABEL_SETS) {
   LABELS_IN_SET.set(labelSet, [labelSet.deletePost.rkey, ...labelSet.labels.map((l) => l.rkey)]);
 }
 
-export const labelerServer = new LabelerServer({ did: DID, signingKey: SIGNING_KEY });
+export const labelerServer = new LabelerServer({ did: DID, signingKey: SIGNING_KEY, dbPath: DB_PATH });
 
 export const label = (did: string, rkey: string) => {
   logger.info(`Received rkey: ${rkey} for ${did}`);
