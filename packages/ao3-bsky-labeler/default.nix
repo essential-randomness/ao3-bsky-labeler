@@ -2,6 +2,7 @@
   lib,
   writeScriptBin,
   buildNpmPackage,
+  nodejs_22,
   ...
 }:  let
   package-json = lib.importJSON (lib.snowfall.fs.get-file "package.json");
@@ -13,6 +14,8 @@ in
     src = lib.snowfall.fs.get-file "/";
 
     npmDepsHash = "sha256-XJZXwfHVxIZcK9VGEAdudwpfjdeXD/k9+FTILBed1Ok=";
+
+    nodejs = nodejs_22;
 
     dontNpmBuild = true;
   }
