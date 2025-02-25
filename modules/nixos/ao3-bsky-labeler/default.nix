@@ -23,7 +23,7 @@ let
     inherit (builtins) toString;
     inherit (lib) types mkIf mkOption mkDefault;
     inherit (lib) optional optionals optionalAttrs optionalString;
-
+    cfg = config.services.ao3-bsky-labeler;
 in {
     options.services.ao3-bsky-labeler = {
         enable =
