@@ -108,6 +108,8 @@ in {
 
             environment = {
                 PORT = builtins.toString cfg.port;
+                CURSOR_FILE_PATH = "${stateDir}/cursor.txt";
+                DB_PATH =  "${stateDir}/labels.db";
             };
 
             # this is where we can write a bash script to do everything we need 
