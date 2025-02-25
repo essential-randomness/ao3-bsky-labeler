@@ -14,10 +14,10 @@ for (const labelSet of LABEL_SETS) {
 export const labelerServer = new LabelerServer({ did: DID, signingKey: SIGNING_KEY, dbPath: DB_PATH });
 
 export const label = (did: string, rkey: string) => {
-  logger.info(`Received rkey: ${rkey} for ${did}`);
+  logger.trace(`Received rkey: ${rkey} for ${did}`);
 
   if (rkey === 'self') {
-    logger.info(`${did} liked the labeler. Returning.`);
+    logger.trace(`${did} liked the labeler. Returning.`);
     return;
   }
   try {
