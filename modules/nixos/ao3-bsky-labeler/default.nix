@@ -71,6 +71,12 @@ in {
             default = "ao3-bsky-labeler";
             description = "Group under which ao3-bsky-labeler is ran.";
         };
+
+        package = mkOption {
+            type = types.package;
+            default = pkgs.${namespace}.ao3-bsky-labeler;
+            description = "The labeler package to run";
+        }
     };
   
     config = mkIf cfg.enable {

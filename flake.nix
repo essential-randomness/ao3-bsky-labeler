@@ -16,5 +16,7 @@
       inherit inputs;
 
       src = ./.;
+
+      snowfall.namespace = "fujocoded";
     };
 }
