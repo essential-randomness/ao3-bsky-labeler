@@ -76,7 +76,7 @@ in {
             type = types.package;
             default = pkgs.${namespace}.ao3-bsky-labeler;
             description = "The labeler package to run";
-        }
+        };
     };
   
     config = mkIf cfg.enable {
