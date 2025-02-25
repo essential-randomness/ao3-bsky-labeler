@@ -107,7 +107,7 @@ in {
             };
 
             environment = {
-                PORT = cfg.port;
+                PORT = builtins.toString cfg.port;
             };
 
             # this is where we can write a bash script to do everything we need 
