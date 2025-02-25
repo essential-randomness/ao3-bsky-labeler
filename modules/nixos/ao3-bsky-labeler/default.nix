@@ -41,6 +41,12 @@ in {
             description = "The port the labeler should listen on.";
         };
 
+        metricsPort = mkOption {
+            type = types.port;
+            default = 4106;
+            description = "The port for the labeler metrics.";
+        };
+
         signingKeyFile = mkOption {
             ##
             # DO NOT USE types.path! It pulls the file into the Nix Store and
@@ -108,6 +114,7 @@ in {
 
             environment = {
                 PORT = builtins.toString cfg.port;
+                METRICS_PORT = builtins.toString cfg.metricsPort;
                 CURSOR_FILE_PATH = "${cfg.stateDir}/cursor.txt";
                 DB_PATH =  "${cfg.stateDir}/labels.db";
             };
