@@ -3,6 +3,7 @@
   writeScriptBin,
   buildNpmPackage,
   nodejs_22,
+  makeWrapper,
   ...
 }:  let
   package-json = lib.importJSON (lib.snowfall.fs.get-file "package.json");
@@ -18,4 +19,10 @@ in
     nodejs = nodejs_22;
 
     dontNpmBuild = true;
+
+    nativeBuildInputs = [makeWrapper];
+
+    postInstall = ''
+      makeWrapper ${nodejs_22}/bin/node $out/bin/ao3-bsky-labeler --add-flags $out/lib/node_modules/ao3-bsky-labeler/node_modules/.bin/tsx --add-flags $out/lib/node_modules/ao3-bsky-labeler/src/main.ts
+    '';
   }
