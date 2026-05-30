@@ -8,6 +8,8 @@
     "format": "bunx prettier --write .",
     "lint": "bunx eslint .",
     "lint:fix": "bunx eslint --fix .",
+    "reconcile:diff": "tsx src/reconcile.ts",
+    "reconcile:apply": "tsx src/reconcile.ts --apply --actual-db",
     "set-posts": "bunx tsx src/set-posts.ts",
     "set-labels": "bunx tsx src/set-labels.ts"
   },
@@ -29,7 +31,7 @@
   "dependencies": {
     "@atproto/api": "^0.13.15",
     "@skyware/bot": "^0.3.7",
-    "@skyware/jetstream": "^0.2.0",
+    "@skyware/jetstream": "^0.2.5",
     "@skyware/labeler": "^0.1.13",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
